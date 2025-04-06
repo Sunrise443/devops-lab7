@@ -1,0 +1,23 @@
+# будет запускаться только при пуше в ветку main для сборки образа и доставки его в репозиторий Docker Hub
+name: Build and Delivery
+on:
+    workflow_run:
+        workflows: ["Test Python App"]
+        types: [completed]
+        branches: [main]
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        if: ${{ github.event.workflow_run.conclusion == 'success' }}
+        steps:
+            - name: DokerHub Login
+              uses: doker/login-action@v3
+              with:
+                username: ${{ vars.DOCKERHUB_USERNAME }}
+                password: ${{ secrets.DOCKERHUB_TOKEN }}
+            - name: Build and Push
+              uses: docker/build-push-action@v6
+              with:
+                push: true
+                tags: ${{ vars.DOCKERHUB_USERNAME }}/my-app:latest

@@ -1,0 +1,22 @@
+#будет запускаться при любом коммите для запуска unitтестов tests
+name: Test Python App
+on:
+    push:
+        branches: ['dev']
+
+jobs:
+    test:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+            - name: Setup Python
+              uses: actions/setup-python@v5
+              with:
+                python-version: '3.12'
+            - name: Install Dependencies
+              run: |
+                pyton -m pip install --upgrade pip
+                pip install -r requirements.txt pytest httpx
+            - name: Run Tests
+              run: python -m pytest tests/
