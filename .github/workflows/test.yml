@@ -16,7 +16,7 @@ jobs:
                 python-version: '3.12'
             - name: Install Dependencies
               run: |
-                pyton -m pip install --upgrade pip
+                python -m pip install --upgrade pip
                 pip install -r requirements.txt pytest httpx
             - name: Run Tests
               run: python -m pytest tests/
